@@ -6,7 +6,8 @@ const percentBtn = document.querySelector("#percent");
 const divideBtn = document.querySelector("#divide");
 
 const buttons = document.querySelectorAll(".button");
-buttons.forEach(button => {
+buttons.forEach(button => 
+	{
 	button.addEventListener("click", () => fireButton(button));
 });
 
