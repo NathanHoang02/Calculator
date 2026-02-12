@@ -1,9 +1,12 @@
-let onScreen = document.querySelector("#screen");
+let activeNum = document.querySelector("#active-num");
+let expression = document.querySelector("#expression");
 
-const clearScreenBtn = document.querySelector("#clear");
-const invertBtn = document.querySelector("#invert");
+const clearBtn = document.querySelector("#clear");const invertBtn = document.querySelector("#invert");
 const percentBtn = document.querySelector("#percent");
 const divideBtn = document.querySelector("#divide");
+
+let errorMessage = "Nope";
+let fixedLimit = 10;
 
 const buttons = document.querySelectorAll(".button");
 buttons.forEach(button => 
@@ -17,30 +20,48 @@ function fireButton(button)
 	switch (button.id) 
 	{
 		case "clear":
-			allClear();
-			
+			checkHalfClear() ? halfClear() : allClear();
 			break;
-
+			
 		case "invert":
-			console.log("Invert!");
+			activeNum.textContent = +(activeNum.textContent * -1).toFixed(fixedLimit);
 			break;
 
 		case "percent":
-			console.log("Percent!");
+			activeNum.textContent = +(activeNum.textContent / 100).toFixed(fixedLimit);
+			break;
+
+		case "decimal":
+			clearBtn.textContent = "C";
+			updateActiveNum(button.textContent);
 			break;
 
 		case "equals":
-			onScreen.textContent = operate(onScreen.textContent);
+			expression.textContent += activeNum.textContent;
+			activeNum.textContent = operate(expression.textContent);
 			break;
 	
+		case "divide":
+
+		case "multiply":
+
+		case "subtract":
+
+		case "add":
+
 		default:
-			if (onScreen.textContent === "0") onScreen.textContent = "";
-			updateScreen(button.textContent)
+		if (activeNum.textContent === "0" || 
+				activeNum.textContent === errorMessage) 
+				{
+					activeNum.textContent = "";
+				}
+			clearBtn.textContent = "C";
+			updateActiveNum(button.textContent);
 			break;
 	};
 }
 
-function updateScreen(value) 
+function updateActiveNum(value)
 {
 	switch (value) 
 	{
@@ -48,18 +69,28 @@ function updateScreen(value)
 		case "×":
 		case "–":
 		case "+":
-			onScreen.textContent += " " + value + " "
+			expression.textContent = "";
+			expression.textContent += `${activeNum.textContent} ${value} `;
+			activeNum.textContent = "0";
 			break;
 	
 		default:
-			onScreen.textContent += value
+			activeNum.textContent += value
 			break;
 	}
 }
 
 function allClear() 
 {
-	onScreen.textContent = "0";
+	activeNum.textContent = "0";
+	expression.textContent = "";
+	clearBtn.textContent = "AC";
+}
+
+function halfClear() 
+{
+	activeNum.textContent = "0";
+	clearBtn.textContent = "AC";
 }
 
 function operate(str) 
@@ -79,26 +110,32 @@ function operate(str)
 
 	if (!methods[opr] || isNaN(a) || isNaN(b)) 
 	{
-		return NaN;
+		expression.textContent = "";
+		return errorMessage;
 	}
 	const answer = methods[opr](a, b);
-	return +(answer + Number.EPSILON).toFixed(5);
+	return +(answer + Number.EPSILON).toFixed(fixedLimit);
 }
 
-function testCalculations() 
-{
-	for (let index = 0; index < 10; index++) 
-		{
-		let randA = Math.floor(Math.random() * 100) + 1;
-		let randB = Math.floor(Math.random() * 100) + 1;
-		let operators = 
-		{
-			symbol : ["+", "-", "*", "/"],
-			word : ["sum of", "difference between", "product of", "quotient of"],
-		};
-		let chooser = Math.floor(Math.random() * 4);
+	function checkHalfClear() 
+	{
+	return clearBtn.textContent === "C";
+	}
+
+// function testCalculations() 
+// {
+// 	for (let index = 0; index < 10; index++) 
+// 		{
+// 		let randA = Math.floor(Math.random() * 100) + 1;
+// 		let randB = Math.floor(Math.random() * 100) + 1;
+// 		let operators = 
+// 		{
+// 			symbol : ["+", "-", "*", "/"],
+// 			word : ["sum of", "difference between", "product of", "quotient of"],
+// 		};
+// 		let chooser = Math.floor(Math.random() * 4);
 	
-		console.log(`The ${operators.word[chooser]} ${randA} and ${randB} is ${operate(`${randA} ${operators.symbol[chooser]} ${randB}`)}`);
-	};
-}
-testCalculations();
+// 		console.log(`The ${operators.word[chooser]} ${randA} and ${randB} is ${operate(`${randA} ${operators.symbol[chooser]} ${randB}`)}`);
+// 	};
+// }
+// testCalculations();
