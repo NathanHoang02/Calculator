@@ -1,83 +1,163 @@
-let activeNum = document.querySelector("#active-num");
-let expression = document.querySelector("#expression");
+const activeNum = document.querySelector("#active-num");
+const expression = document.querySelector("#expression");
 
-const clearBtn = document.querySelector("#clear");const invertBtn = document.querySelector("#invert");
-const percentBtn = document.querySelector("#percent");
-const divideBtn = document.querySelector("#divide");
+const clearBtn = document.querySelector("#clear");
 
-let errorMessage = "Nope";
 let fixedLimit = 10;
+const Operators = ["÷", "×", "–", "+"];
 
 const buttons = document.querySelectorAll(".button");
 buttons.forEach(button => 
 	{
-	button.addEventListener("click", () => fireButton(button));
+	button.addEventListener("click", () => calculate(button.textContent));
 });
 
-function fireButton(button) 
-{
-	console.log(button.id);
-	switch (button.id) 
+window.addEventListener("keydown", (e)=> 
 	{
-		case "clear":
+		if(e.key === "Backspace") 
+			{
+				backspaceActiveNum(); 
+			}
+		else if 
+			(e.key === "Enter") 
+			{
+				calculate("=");
+			}
+		else if 
+			(e.key.length > 1) 
+			{
+				return; 
+			}
+		else if 
+			(parseInt(e.key))
+			{
+				calculate(e.key);
+			}
+		else 
+			{
+				const buttonFromKey = convertKeyToButtonText(e.key)
+				if (buttonFromKey) 
+					{
+						calculate(buttonFromKey); 
+					}
+			}
+	}); 
+
+function backspaceActiveNum() {
+	activeNum.textContent = activeNum.textContent.slice(0, -1);
+	if (activeNum.textContent === "") {
+		halfClear();
+	}
+}
+
+function convertKeyToButtonText(eventKey) {
+	switch (eventKey) {
+		case "x":
+		case "*":
+			return "×";
+	
+		case "/":
+			return "÷";
+	
+		case "-":
+			return "–";
+	
+		case "a":
+			return "+";
+			
+		case "p":
+			return "%";
+		
+		case "c":
+			return "C";
+		
+		case "i":
+			return "+/-";
+		
+		case "f":
+		case "!":
+			displayFactorial(activeNum.textContent);
+			break;
+
+		case ".":
+		case "%":
+		case "–":
+		case "÷":
+		case "+":
+		case "=":
+			return eventKey;
+		
+		default:
+			return;
+	}
+}
+function calculate(buttonText)
+{
+	switch (buttonText) 
+	{
+		case "C":
+
+		case "AC":
 			checkHalfClear() ? halfClear() : allClear();
 			break;
-			
-		case "invert":
-			activeNum.textContent = +(activeNum.textContent * -1).toFixed(fixedLimit);
-			break;
 
-		case "percent":
-			activeNum.textContent = +(activeNum.textContent / 100).toFixed(fixedLimit);
-			break;
+		case"+/-": 
+			activeNum.textContent =+(activeNum.textContent * -1).toFixed(fixedLimit); 
+			break; 
 
-		case "decimal":
-			clearBtn.textContent = "C";
-			updateActiveNum(button.textContent);
-			break;
+		case "%": 
+			activeNum.textContent =+ (activeNum.textContent / 100).toFixed(fixedLimit); 
+			break; 
 
-		case "equals":
-			expression.textContent += activeNum.textContent;
-			activeNum.textContent = operate(expression.textContent);
-			break;
+		case ".": 
+			clearBtn.textContent = "C"; 
+			updateActiveNum(buttonText);
+			break; 
+
+		case "=": 
+		checkRepeatEquals(); 
+		break; 
+
+		case "÷":
+
+		case "×":
+
+		case "–":
+
+		case "+":
+		fireOperator(buttonText); 
+		break; 
+
+		default: 
+		if (activeNum.textContent === "0")
+		activeNum.textContent = ""; 
+		clearBtn.textContent = "C"; 
+		updateActiveNum(buttonText); 
+		break; 
+	}; 
+}
+
+checkRepeatEquals()
+{
 	
-		case "divide":
+}
 
-		case "multiply":
-
-		case "subtract":
-
-		case "add":
-
-		default:
-		if (activeNum.textContent === "0" || 
-				activeNum.textContent === errorMessage) 
-				{
-					activeNum.textContent = "";
-				}
-			clearBtn.textContent = "C";
-			updateActiveNum(button.textContent);
-			break;
-	};
+function runEquals() 
+{
+	expression.textContent += activeNum.textContent;
+	activeNum.textContent = operate(expression.textContent);
 }
 
 function updateActiveNum(value)
 {
-	switch (value) 
-	{
-		case "÷":
-		case "×":
-		case "–":
-		case "+":
-			expression.textContent = "";
-			expression.textContent += `${activeNum.textContent} ${value} `;
-			activeNum.textContent = "0";
-			break;
-	
-		default:
-			activeNum.textContent += value
-			break;
-	}
+	activeNum.textContent += value;
+}
+
+function updateExpression(value) 
+{
+	expression.textContent = "";
+	expression.textContent += `${activeNum.textContent} ${value} `;
+	activeNum.textContent = "0";
 }
 
 function allClear() 
@@ -91,6 +171,27 @@ function halfClear()
 {
 	activeNum.textContent = "0";
 	clearBtn.textContent = "AC";
+}
+
+function checkHalfClear() 
+{
+	return clearBtn.textContent === "C";
+}
+
+function fireOperator(button)
+{
+	const opr = Operators.some(operator => 
+		{
+			return expression.textContent.includes(operator)
+		}); 
+	
+	const isEmpty = expression.textContent.split("").includes(""); 
+	if (isEmpty && opr) 
+		runEquals(); 
+	else 
+		{
+			updateExpression(button.textContent); 
+		}
 }
 
 function operate(str) 
@@ -116,11 +217,6 @@ function operate(str)
 	const answer = methods[opr](a, b);
 	return +(answer + Number.EPSILON).toFixed(fixedLimit);
 }
-
-	function checkHalfClear() 
-	{
-	return clearBtn.textContent === "C";
-	}
 
 // function testCalculations() 
 // {
