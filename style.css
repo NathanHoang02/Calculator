@@ -13,7 +13,7 @@ body {
 	height: 100vh;
 	margin: unset;
 	padding: 0 8px;
-	background-color: white;
+	background-image: linear-gradient(#606466, #dde1e2);
 	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
@@ -72,7 +72,7 @@ header {
 		width: 26px;
 		left: 4px;
 		bottom: 4px;
-		background-color: rgb(255 171 0);
+		background-color: #c3123b;
 		-webkit-transition: .4s;
 		transition: .4s;
 	}
@@ -112,34 +112,48 @@ main
 #calculator 
 {
 	justify-content: space-between;
-	background-color: black;
-	height: 450px;
+	background-color: gray;
+	height: 465px;
 	width: 300px;
+	border: 4px outset black;
 	border-radius: 10px;
-	box-shadow: 1px 1px 20px 2px #393939;
+	box-shadow: 4px 4px 13px 2px #393939;
 }
 
 #screen 
 {
-	justify-content: flex-end;
+	justify-content: center;
 	align-items: center;
 	background-color: #c9f8f8;
-	height: 100px;
+	height: 110px;
 	margin: 10px;
 	padding: 0 10px;
-	font-size: 38px;
+	border-radius: 10px;
 }
 
-#screen p 
+#expression 
 {
-	margin: unset;
+		height: 30px;
+		padding-left: 10px;
+		font-size: 25px;
 }
+
+#active-num 
+{
+		align-self: flex-end;
+		height: 45px;
+		font-size: 38px;
+}
+
 
 #button-container 
 {
 	justify-content: space-between;
 	height: 100%;
-	padding: 10px 15px;
+	padding: 10px 10px;
+	background-color: #22282a;
+    border-radius: 32px;
+    margin: 5px;
 }
 
 	.button-row 
@@ -150,23 +164,23 @@ main
 
 	#button-container .button-row :last-child 
 	{
-		background-color: rgb(255 171 0);
-		color: white;
+		background-color: #fbfdfd;
+		color: #0e1618;
 		font-size: 30px;
 	}
 
 	#button-container .button-row :last-child:hover 
 	{
-		background-color: rgb(250, 192, 76);
+			background-color: #d8d9d9;
 	}
 
 		.button 
 		{
 			justify-content: center;
 			align-items: center;
-			background-color: rgb(81, 81, 81);
-			color: white;
-			border-radius: 50px;
+			background-color: #fbfdfd;
+			color: #0e1618;
+			border-radius: 20px;
 			width: 60px;
 			height: 60px;
 			font-size: 25px;
@@ -175,20 +189,20 @@ main
 
 		.button:hover 
 		{
-			background-color: rgb(113, 113, 113);
-			scale: 1.02;
+			background-color: #cfef8d;
+			scale: 1.01;
 			transition: 0.2s;
+			transform: translateY(-1px);
+			box-shadow: 0px 2px 2px 1px black;
 		}
 
-		#rowAC .button 
-		{
-			background-color: rgb(206, 206, 206);
-			color: black;
+		#rowAC .button {
+		    background-color: #bd505d;
+    		color: #0e1618;
 		}
 
-		#rowAC .button:hover 
-		{
-			background-color: rgb(236, 236, 236);
+		#rowAC .button:hover {
+			background-color: #ceeaf3;
 		}
 		
 		#zero 

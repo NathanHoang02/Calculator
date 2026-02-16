@@ -139,11 +139,27 @@ function calculate(buttonText)
 
 checkRepeatEquals()
 {
-	
+	if(+activeNum.textContent === 0) 
+		return;
+
+	const oprPresent = Operators.some(operator => {
+		return expression.textContent.includes(operator);
+	});
+	const IsEmpty = expression.textContent.split("").includes("");
+	if (IsEmpty && oprPresent)
+		runEquals(true);
+	else
+		{
+			let expArray = expression.textContent.split(" ");
+			expArray.splice(0, 1, activeNum.textContent);
+			expression.textContent = expArray.join(" ");
+			runEquals(false);
+		}
 }
 
-function runEquals() 
+function runEquals(addToEnd) 
 {
+	if (addToEnd)
 	expression.textContent += activeNum.textContent;
 	activeNum.textContent = operate(expression.textContent);
 }
@@ -180,13 +196,13 @@ function checkHalfClear()
 
 function fireOperator(button)
 {
-	const opr = Operators.some(operator => 
+	const oprPresent = Operators.some(operator => 
 		{
 			return expression.textContent.includes(operator)
 		}); 
 	
 	const isEmpty = expression.textContent.split("").includes(""); 
-	if (isEmpty && opr) 
+	if (isEmpty && oprPresent) 
 		runEquals(); 
 	else 
 		{
@@ -211,8 +227,7 @@ function operate(str)
 
 	if (!methods[opr] || isNaN(a) || isNaN(b)) 
 	{
-		expression.textContent = "";
-		return errorMessage;
+		return;
 	}
 	const answer = methods[opr](a, b);
 	return +(answer + Number.EPSILON).toFixed(fixedLimit);
