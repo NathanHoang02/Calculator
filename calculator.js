@@ -1,12 +1,44 @@
+const body = document.querySelector("body");
+const calculator = document.querySelector("#calculator");
+const darkModeSwitch = document.querySelector(".switch");
+const darkModeText = document.querySelector("#dark-mode-text");
+
 const activeNum = document.querySelector("#active-num");
 const expression = document.querySelector("#expression");
 const clearBtn = document.querySelector("#clear");
 const darkMode = document.querySelector(".switch");
 
-let fixedLimit = 8;
+let darkModeOn = false;
 
 const operators = ["÷", "×", "–", "+"]
 
+darkModeSwitch.addEventListener("mouseup", toggleDarkMode)
+
+function toggleDarkMode() 
+{
+	darkModeOn = !darkModeOn;
+	if (darkModeOn) 
+	{
+		makeItDark();
+	} 
+	else 
+	{
+		makeItBright();
+	}
+	console.log(darkModeOn);
+}
+
+function makeItDark() 
+{
+	darkModeText.textContent = "Dark Mode";
+	body.classList.add("dark");
+}
+
+function makeItBright() 
+{
+	darkModeText.textContent = "Light Mode";
+	body.classList.remove("dark");
+}
 
 const buttons = document.querySelectorAll(".button");
 buttons.forEach(button => 
@@ -110,11 +142,11 @@ function calculate(buttonText)
 			break;
 
 		case "+/-":
-			activeNum.textContent = +(activeNum.textContent * -1).toFixed(fixedLimit);
+			updateActiveNum(+(activeNum.textContent * -1), "set")
 			break;
 
 		case "%":
-			activeNum.textContent = +(activeNum.textContent / 100).toFixed(fixedLimit);
+			updateActiveNum(+(activeNum.textContent / 100), "set")
 			break;
 
 		case ".":
@@ -180,20 +212,23 @@ function runEquals(addToEnd)
 
 function updateActiveNum(value, setAdd) 
 {
-	if (value.toString().length > 14 && value < 9999999999) 
+	if (value.toString().length > 13 && value < 9999999999) 
 	{
-		value = value.toFixed(fixedLimit);
-	} else if (value.toString().length > 14 && value > 9999999999) 
+		value = value.toFixed(10);
+	} 
+	else if (value.toString().length > 13 && value > 9999999999) 
 	{
-		value = value.toExponential(fixedLimit);
+		value = value.toExponential(7);
+
 	}
 	if (setAdd ===  "set") 
 	{
-		activeNum.textContent = value
+		activeNum.textContent = +value
 	}
 	if (setAdd ===  "add") 
 	{
-		activeNum.textContent += value
+		activeNum.textContent += +value
+
 	}
 }
 
@@ -246,7 +281,7 @@ function operate(str)
 		return;
 	}
 	const answer = methods[opr](a, b);
-	return +(answer + Number.EPSILON).toFixed(fixedLimit);
+	return +(answer + Number.EPSILON);
 }
 
 function fireOperator(buttonText) 
