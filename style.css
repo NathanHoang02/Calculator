@@ -1,3 +1,58 @@
+:root 
+{
+	--off-black: #0e1618;
+}
+
+:root.light 
+{
+	--background-gradient: linear-gradient(gray, skyblue);
+	--header-text-color: black;
+
+	--calc-background: var(--off-black);
+	--calc-border: 4px outset gray;
+	--calc-shadow: 4px 4px 13px 2px darkgray;
+
+	--screen-background: lightblue;;
+	--screen-text-color: black;
+
+	--button-container-background: black;
+	--button-background:  lightgray;
+	--button-background-hover: lightgray;
+	--button-text-color: var(--off-black);
+
+	--rowAC-background: #c3123b;
+	--rowAC-text-color: var(--off-black);
+	--rowAC-background-hover: lightgray;
+
+	--opr-column-background: #fbfdfd;
+	--opr-column-background-hover: #d8d9d9;
+	--opr-column-text-color: var(--off-black);
+}
+
+:root.dark 
+{
+	--background-gradient: linear-gradient(#7b8182, #131515);
+	--header-text-color: #eef0f3;
+
+	--calc-background: rgb(211, 211, 211);
+	--calc-border: 4px outset #eeeeee;
+	--calc-shadow: 4px 4px 13px 2px var(--off-black);
+
+	--screen-background: var(--off-black);
+	--screen-text-color: white;
+
+	--button-container-background: #eef0f3;
+	--button-background:  #22282a;
+	--button-background-hover: dimgray;
+	--button-text-color: white;
+
+	--rowAC-background: var(--off-black);
+	--rowAC-text-color: #c3123b;
+
+	--opr-column-background: var(--off-black);
+	--opr-column-text-color: #fbfdfd;
+}
+
 .flex 
 {
 	display: flex;
@@ -14,19 +69,20 @@ body
 	height: 100vh;
 	margin: unset;
 	padding: 0 8px;
-	background-image: linear-gradient(#606466, #dde1e2);
+	background-image: var(--background-gradient);
+	color: var(--header-text-color);
 	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-.dark 
-{
-	background-image: linear-gradient(#7b8182, #131515);
-	color: #eef0f3;
-}
 
 header 
 {
 	justify-content: space-between;
+}
+
+#dark-mode-text 
+{
+	text-transform: capitalize;
 }
 
 h1 
@@ -68,7 +124,7 @@ h1
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background-color: grey;
+	background-color: darkslategray;
 	-webkit-transition: .4s;
 	transition: .4s;
 }
@@ -121,35 +177,24 @@ main
 #calculator 
 {
 	justify-content: space-between;
-	background-color: gray;
+	background-color: var(--calc-background);
 	width: 300px;
-	border: 4px outset black;
+	border: var(--calc-border);
 	border-radius: 10px;
-	box-shadow: 4px 4px 13px 2px #393939;
-}
-
-.dark #calculator 
-{
-	background-color: rgb(211, 211, 211);
-	border: 4px outset white;
+	box-shadow: var(--calc-shadow);
 }
 
 #screen 
 {
 	justify-content: center;
 	align-items: center;
-	background-color: #c9f8f8;
+	background-color: var(--screen-background);
+	color: var(--screen-text-color);
 	height: 110px;
 	margin: 10px;
 	padding: 15px;
 	border-radius: 10px;
 	overflow-wrap: anywhere;
-}
-
-.dark #screen 
-{
-	background-color: #0e1618;
-	color: white;
 }
 
 #expression 
@@ -173,15 +218,11 @@ main
 	height: 335px;
 	width: 270px;
 	padding: 10px 10px;
-	background-color: #22282a;
+	background-color: var(--button-container-background);
     border-radius: 32px;
     margin: 5px;
 }
 
-.dark #button-container 
-{
-	background-color: #eef0f3;
-}
 
 .button-row 
 {
@@ -192,79 +233,47 @@ main
 
 .button 
 {
+	--button-w-h: 60px;
 	justify-content: center;
 	align-items: center;
-	background-color: #fbfdfd;
-	color: #0e1618;
-	border-radius: 20px;
-	width: 60px;
-	height: 60px;
+	background-color: var(--button-background);
+	color: var(--button-text-color);
+	border-radius: calc(var(--button-w-h) / 3);
+	--button-w-h: 60px;
+	width: var(--button-w-h);
+	height: var(--button-w-h);
 	font-size: 25px;
 	font-weight: 700;
 }
 
 .button:hover 
 {
-	background-color: grey;
+	background-color: var(--button-background-hover);
 	scale: 1.01;
 	transition: 0.2s;
 	transform: translateY(-1px);
 	box-shadow: 0px 2px 2px 1px black;
 }
-		
-.dark .button 
-{
-	background-color: #22282a;
-	color: white;
-}
-
-.dark .button:hover 
-{
-	background-color: dimgray;
-}
 
 #rowAC .button 
 {
-	background-color: #bd505d;
-    color: #0e1618;
+	background-color: var(--rowAC-background);
+    color: var(--rowAC-text-color);
 }
 
 #rowAC .button:hover 
 {
-	background-color: skyblue;
-}
-
-.dark #rowAC .button 
-{
-	background-color: #bd505d;
-	color: white;
-}
-
-.dark #rowAC .button:hover 
-{
-	background-color: dimgray;
+	background-color: var(--rowAC-background-hover, var(--button-background-hover));
 }
 
 #button-container .button-row :last-child 
 {
-	background-color: #fbfdfd;
-	color: #0e1618;
+	background-color: var(--opr-column-background);
+	color: var(--opr-column-text-color);
 	font-size: 30px;
 }
 
 #button-container .button-row :last-child:hover 
 {
-	background-color: #d8d9d9;
+	background-color: var(--opr-column-background-hover, var(--button-background-hover));
 }
-
-.dark #button-container .button-row :last-child 
-{
-	background-color: #0e1618;
-	color: #fbfdfd;
-}
-
-.dark #button-container .button-row :last-child:hover 
-{
-	background-color: dimgray;
-}
-		

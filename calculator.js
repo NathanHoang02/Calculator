@@ -16,29 +16,15 @@ darkModeSwitch.addEventListener("mouseup", toggleDarkMode)
 
 function toggleDarkMode() 
 {
-	darkModeOn = !darkModeOn;
-	if (darkModeOn) 
-	{
-		makeItDark();
-	} 
-	else 
-	{
-		makeItBright();
-	}
-	console.log(darkModeOn);
+	const root = document.documentElement;
+	const newTheme = root.className === 'light' ? 'dark' : 'light';
+	root.className = newTheme;
+	darkModeText.textContent = newTheme;
+
 }
 
-function makeItDark() 
-{
-	darkModeText.textContent = "Dark Mode";
-	body.classList.add("dark");
-}
+toggleDarkMode();
 
-function makeItBright() 
-{
-	darkModeText.textContent = "Light Mode";
-	body.classList.remove("dark");
-}
 
 const buttons = document.querySelectorAll(".button");
 buttons.forEach(button => 
