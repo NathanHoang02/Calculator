@@ -23,9 +23,6 @@ function toggleDarkMode()
 
 }
 
-toggleDarkMode();
-
-
 const buttons = document.querySelectorAll(".button");
 buttons.forEach(button => 
 {
@@ -213,7 +210,7 @@ function updateActiveNum(value, setAdd)
 	}
 	if (setAdd ===  "add") 
 	{
-		activeNum.textContent += +value
+		activeNum.textContent += value
 
 	}
 }
